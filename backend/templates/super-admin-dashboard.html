@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Super Admin — CMS</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+  <div class="dashboard-container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2>📋 DRKCMS</h2>
+        <div class="subtitle">Super Admin</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#dashboard"       class="nav-link active" data-page="dashboard">       <span>📊</span> Dashboard</a>
+        <a href="#all-complaints"  class="nav-link"        data-page="all-complaints">  <span>📝</span> All Complaints</a>
+        <a href="#user-management" class="nav-link"        data-page="user-management"> <span>👥</span> User Management</a>
+        <a href="#reports"         class="nav-link"        data-page="reports">         <span>📈</span> Reports</a>
+        <a href="#profile"         class="nav-link"        data-page="profile">         <span>👤</span> Profile</a>
+      </nav>
+      <div class="sidebar-footer">
+        <button id="logoutBtn" class="btn btn-danger btn-full">Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="dashboard-header">
+        <h1>Super Admin Dashboard</h1>
+        <div class="user-info">
+          <span id="userName">Super Admin</span>
+          <span class="badge badge-admin">System Administrator</span>
+        </div>
+      </header>
+
+      <div class="content-area">
+
+        <!-- ── Dashboard ──────────────────────────────── -->
+        <div id="dashboardPage" class="page-content active">
+          <div class="stats-grid">
+            <div class="stat-card stat-total">
+              <div class="stat-icon">📋</div>
+              <div class="stat-info"><h3 id="totalComplaints">0</h3><p>Total Complaints</p></div>
+            </div>
+            <div class="stat-card stat-pending">
+              <div class="stat-icon">⏳</div>
+              <div class="stat-info"><h3 id="pendingComplaints">0</h3><p>Pending</p></div>
+            </div>
+            <div class="stat-card stat-progress">
+              <div class="stat-icon">🔄</div>
+              <div class="stat-info"><h3 id="inProgressComplaints">0</h3><p>In Progress</p></div>
+            </div>
+            <div class="stat-card stat-resolved">
+              <div class="stat-icon">✅</div>
+              <div class="stat-info"><h3 id="resolvedComplaints">0</h3><p>Resolved</p></div>
+            </div>
+          </div>
+          <div class="stats-grid" style="margin-bottom:0">
+            <div class="stat-card stat-users">
+              <div class="stat-icon">👥</div>
+              <div class="stat-info"><h3 id="totalUsers">0</h3><p>Total Users</p></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">👨‍🎓</div>
+              <div class="stat-info"><h3 id="totalStudents">0</h3><p>Students</p></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">👨‍🏫</div>
+              <div class="stat-info"><h3 id="totalFaculty">0</h3><p>Faculty</p></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">🏢</div>
+              <div class="stat-info"><h3 id="totalAdmins">0</h3><p>Admin Staff</p></div>
+            </div>
+            <div class="stat-card stat-resolved">
+              <div class="stat-icon">📉</div>
+              <div class="stat-info"><h3 id="resolutionRate">0%</h3><p>Resolution Rate</p></div>
+            </div>
+            <div class="stat-card stat-progress">
+              <div class="stat-icon">⏱</div>
+              <div class="stat-info"><h3 id="avgResolutionDays">0d</h3><p>Avg. Resolution</p></div>
+            </div>
+          </div>
+          <div style="height:20px"></div>
+          <div class="dashboard-grid">
+            <div class="content-section">
+              <h2>Recent Complaints</h2>
+              <div id="recentComplaintsList" class="complaints-list"></div>
+            </div>
+            <div>
+              <div class="content-section">
+                <h2>By Category</h2>
+                <div id="categoryChartDash" class="chart-container"></div>
+              </div>
+              <div class="content-section">
+                <h2>By Status</h2>
+                <div id="statusChartDash" class="chart-container"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── All Complaints ──────────────────────────── -->
+        <div id="allComplaintsPage" class="page-content">
+          <div class="page-header">
+            <h2>All Complaints</h2>
+            <div class="filters">
+              <input type="text" id="superSearchInput" class="search-input" placeholder="Search by title, ID…">
+              <select id="superCategoryFilter" class="filter-select">
+                <option value="">All Categories</option>
+                <option value="academic">Academic</option>
+                <option value="infrastructure">Infrastructure</option>
+                <option value="administrative">Administrative</option>
+                <option value="technical">Technical</option>
+                <option value="hostel">Hostel</option>
+                <option value="transport">Transport</option>
+                <option value="other">Other</option>
+              </select>
+              <select id="superStatusFilter" class="filter-select">
+                <option value="">All Status</option>
+                <option value="pending">Pending</option>
+                <option value="in-progress">In Progress</option>
+                <option value="resolved">Resolved</option>
+                <option value="closed">Closed</option>
+                <option value="rejected">Rejected</option>
+              </select>
+              <select id="superPriorityFilter" class="filter-select">
+                <option value="">All Priorities</option>
+                <option value="urgent">Urgent</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+              </select>
+            </div>
+          </div>
+          <div id="superComplaintsList" class="complaints-list"></div>
+        </div>
+
+        <!-- ── User Management ─────────────────────────── -->
+        <div id="userManagementPage" class="page-content">
+          <div class="page-header">
+            <h2>User Management</h2>
+            <button id="addUserBtn" class="btn btn-primary">+ Add User</button>
+          </div>
+          <div class="filters" style="margin-bottom:16px">
+            <input type="text" id="userSearchInput" class="search-input" placeholder="Search users…">
+            <select id="userTypeFilter" class="filter-select">
+              <option value="">All Types</option>
+              <option value="student">Student</option>
+              <option value="faculty">Faculty</option>
+              <option value="administration">Administration</option>
+              <option value="admin">Super Admin</option>
+            </select>
+          </div>
+          <div id="usersList"></div>
+        </div>
+
+        <!-- ── Reports ─────────────────────────────────── -->
+        <div id="reportsPage" class="page-content">
+          <div class="page-header"><h2>System Reports</h2></div>
+          <div class="stats-grid">
+            <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-info"><h3 id="reportTotalComplaints">0</h3><p>Total Complaints</p></div></div>
+            <div class="stat-card stat-resolved"><div class="stat-icon">✅</div><div class="stat-info"><h3 id="reportResolved">0</h3><p>Resolved</p></div></div>
+            <div class="stat-card stat-pending"><div class="stat-icon">⏳</div><div class="stat-info"><h3 id="reportPending">0</h3><p>Pending</p></div></div>
+            <div class="stat-card"><div class="stat-icon">📉</div><div class="stat-info"><h3 id="reportResolutionRate">0%</h3><p>Resolution Rate</p></div></div>
+            <div class="stat-card"><div class="stat-icon">⏱</div><div class="stat-info"><h3 id="reportAvgDays">0d</h3><p>Avg. Resolution</p></div></div>
+            <div class="stat-card stat-users"><div class="stat-icon">👥</div><div class="stat-info"><h3 id="reportTotalUsers">0</h3><p>Total Users</p></div></div>
+          </div>
+          <div class="dashboard-grid">
+            <div class="content-section"><h2>By Category</h2><div id="reportCategoryChart" class="chart-container"></div></div>
+            <div class="content-section"><h2>By Status</h2><div id="reportStatusChart" class="chart-container"></div></div>
+          </div>
+          <div class="dashboard-grid">
+            <div class="content-section"><h2>By Priority</h2><div id="reportPriorityChart" class="chart-container"></div></div>
+            <div class="content-section"><h2>Monthly Trend (6 months)</h2><div id="reportMonthlyChart" class="chart-container"></div></div>
+          </div>
+        </div>
+
+        <!-- ── Profile ─────────────────────────────────── -->
+        <div id="profilePage" class="page-content">
+          <div class="page-header"><h2>My Profile</h2></div>
+          <div class="profile-section">
+            <div class="profile-card">
+              <h3>User Information</h3>
+              <div class="profile-info">
+                <p><strong>User ID:</strong> <span id="profileUserId"></span></p>
+                <p><strong>Name:</strong>    <span id="profileName"></span></p>
+                <p><strong>Email:</strong>   <span id="profileEmail"></span></p>
+                <p><strong>Type:</strong>    <span id="profileType"></span></p>
+              </div>
+            </div>
+            <div class="profile-card">
+              <h3>Change Password</h3>
+              <form id="changePasswordForm">
+                <div class="form-group"><label>Current Password</label><input type="password" id="oldPassword" required></div>
+                <div class="form-group"><label>New Password</label><input type="password" id="newPassword" required minlength="8"></div>
+                <div class="form-group"><label>Confirm</label><input type="password" id="confirmNewPassword" required minlength="8"></div>
+                <div id="passwordMessage" class="form-message"></div>
+                <button type="submit" class="btn btn-primary">Update Password</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Complaint Detail / Update Modal -->
+  <div id="complaintModal" class="modal">
+    <div class="modal-content large">
+      <span class="close">&times;</span>
+      <h2 style="margin-bottom:16px">Complaint Details</h2>
+      <div id="modalComplaintDetails"></div>
+      <div class="modal-actions">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <h3>Update Complaint</h3>
+          <button id="deleteComplaintBtn" class="btn btn-sm btn-danger">🗑 Delete</button>
+        </div>
+        <form id="modalUpdateForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Status</label>
+              <select id="modalUpdateStatus">
+                <option value="pending">Pending</option>
+                <option value="in-progress">In Progress</option>
+                <option value="resolved">Resolved</option>
+                <option value="closed">Closed</option>
+                <option value="rejected">Rejected</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Priority</label>
+              <select id="modalUpdatePriority">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+                <option value="urgent">Urgent</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Admin Remarks</label>
+            <textarea id="modalAdminRemarks" rows="3" placeholder="Add a remark or comment…"></textarea>
+          </div>
+          <div id="modalUpdateMessage" class="form-message"></div>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add User Modal -->
+  <div id="addUserModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2 style="margin-bottom:20px">Add New User</h2>
+      <form id="addUserForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label>User ID *</label>
+            <input type="text" id="newUserId" required placeholder="e.g. STU2024100">
+          </div>
+          <div class="form-group">
+            <label>User Type *</label>
+            <select id="newUserType" required>
+              <option value="student">Student</option>
+              <option value="faculty">Faculty</option>
+              <option value="administration">Administration</option>
+              <option value="admin">Super Admin</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input type="text" id="newUserName" required placeholder="Full name">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Email *</label>
+            <input type="email" id="newUserEmail" required placeholder="user@institution.edu">
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="tel" id="newUserPhone" placeholder="10-digit number">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Date of Birth *</label>
+          <input type="date" id="newUserBirthdate" required>
+          <span class="form-hint">Used for first-time account activation</span>
+        </div>
+        <div id="addUserMessage" class="form-message"></div>
+        <button type="submit" class="btn btn-primary btn-full">Create User</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit User Modal -->
+  <div id="editUserModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2 style="margin-bottom:20px">Edit User</h2>
+      <form id="editUserForm">
+        <input type="hidden" id="editUserId">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="editUserName" required>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="editUserEmail" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="tel" id="editUserPhone">
+          </div>
+          <div class="form-group">
+            <label>User Type</label>
+            <select id="editUserType">
+              <option value="student">Student</option>
+              <option value="faculty">Faculty</option>
+              <option value="administration">Administration</option>
+              <option value="admin">Super Admin</option>
+            </select>
+          </div>
+        </div>
+        <div id="editUserMessage" class="form-message"></div>
+        <button type="submit" class="btn btn-primary btn-full">Save Changes</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/super-admin-dashboard.js"></script>
+</body>
+</html>

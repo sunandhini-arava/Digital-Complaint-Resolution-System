@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Activate Account — Complaint Management System</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-card" style="max-width:460px">
+      <div class="auth-header">
+        <div class="auth-logo">🔓</div>
+        <h2>Activate Account</h2>
+        <p>Set up your password using your registered User ID and date of birth</p>
+      </div>
+
+      <form id="activateForm" class="auth-form">
+        <div class="form-group">
+          <label for="user_id">User ID</label>
+          <input type="text" id="user_id" required placeholder="e.g. STU2024001">
+          <span id="userIdStatus" class="form-hint"></span>
+        </div>
+
+        <div id="step2" style="display:none">
+          <div class="form-group">
+            <label for="birthdate">Date of Birth</label>
+            <input type="date" id="birthdate" required>
+            <span class="form-hint">This must match the date registered by your administrator</span>
+          </div>
+          <div class="form-group">
+            <label for="new_password">New Password</label>
+            <input type="password" id="new_password" required minlength="8"
+                   placeholder="Minimum 8 characters">
+          </div>
+          <div class="form-group">
+            <label for="confirm_password">Confirm Password</label>
+            <input type="password" id="confirm_password" required minlength="8"
+                   placeholder="Re-enter new password">
+          </div>
+        </div>
+
+        <div id="errorMessage"   class="error-message"></div>
+        <div id="successMessage" class="success-message"></div>
+
+        <button type="submit" class="btn btn-primary btn-full" id="step2" style="display:none">
+          Activate Account
+        </button>
+      </form>
+
+      <div class="auth-links">
+        <p>Already activated? <a href="/login.html">Login here</a></p>
+        <p><a href="/">← Back to Home</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/activate.js"></script>
+  <script>
+    // Show submit button once step2 is visible
+    document.getElementById('step2')?.addEventListener('DOMSubtreeModified', () => {});
+    // Workaround: watch userIdStatus to show button
+    const observer = new MutationObserver(() => {
+      const step2 = document.getElementById('step2');
+      const btn = document.querySelector('button[type="submit"]');
+      if (step2 && btn) btn.style.display = step2.style.display;
+    });
+    const step2el = document.getElementById('step2');
+    if (step2el) observer.observe(step2el, { attributes: true, attributeFilter: ['style'] });
+  </script>
+</body>
+</html>

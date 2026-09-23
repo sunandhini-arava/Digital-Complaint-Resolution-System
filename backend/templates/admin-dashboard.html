@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — CMS</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+  <div class="dashboard-container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2>📋 DRKCMS Admin</h2>
+        <div class="subtitle">Administration</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#dashboard"      class="nav-link active" data-page="dashboard">     <span>📊</span> Dashboard</a>
+        <a href="#all-complaints" class="nav-link"        data-page="all-complaints"><span>📝</span> All Complaints</a>
+        <a href="#pending"        class="nav-link"        data-page="pending">        <span>⏳</span> Pending</a>
+        <a href="#in-progress"    class="nav-link"        data-page="in-progress">   <span>🔄</span> In Progress</a>
+        <a href="#resolved"       class="nav-link"        data-page="resolved">      <span>✅</span> Resolved</a>
+        <a href="#profile"        class="nav-link"        data-page="profile">       <span>👤</span> Profile</a>
+      </nav>
+      <div class="sidebar-footer">
+        <button id="logoutBtn" class="btn btn-danger btn-full">Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="dashboard-header">
+        <h1>Admin Dashboard</h1>
+        <div class="user-info">
+          <span id="userName">Admin</span>
+          <span class="badge badge-administration">Administration</span>
+        </div>
+      </header>
+
+      <div class="content-area">
+
+        <!-- Dashboard -->
+        <div id="dashboardPage" class="page-content active">
+          <div class="stats-grid">
+            <div class="stat-card stat-total">
+              <div class="stat-icon">📋</div>
+              <div class="stat-info"><h3 id="totalComplaints">0</h3><p>Total Complaints</p></div>
+            </div>
+            <div class="stat-card stat-pending">
+              <div class="stat-icon">⏳</div>
+              <div class="stat-info"><h3 id="pendingComplaints">0</h3><p>Pending</p></div>
+            </div>
+            <div class="stat-card stat-progress">
+              <div class="stat-icon">🔄</div>
+              <div class="stat-info"><h3 id="inProgressComplaints">0</h3><p>In Progress</p></div>
+            </div>
+            <div class="stat-card stat-resolved">
+              <div class="stat-icon">✅</div>
+              <div class="stat-info"><h3 id="resolvedComplaints">0</h3><p>Resolved</p></div>
+            </div>
+          </div>
+          <div class="dashboard-grid">
+            <div class="content-section">
+              <h2>Recent Complaints</h2>
+              <div id="recentComplaintsList" class="complaints-list"></div>
+            </div>
+            <div class="content-section">
+              <h2>Category Distribution</h2>
+              <div id="categoryChart" class="chart-container"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- All Complaints -->
+        <div id="allComplaintsPage" class="page-content">
+          <div class="page-header">
+            <h2>All Complaints</h2>
+            <div class="filters">
+              <input type="text" id="searchInput" placeholder="Search…" class="search-input">
+              <select id="categoryFilter" class="filter-select">
+                <option value="">All Categories</option>
+                <option value="academic">Academic</option>
+                <option value="infrastructure">Infrastructure</option>
+                <option value="administrative">Administrative</option>
+                <option value="technical">Technical</option>
+                <option value="hostel">Hostel</option>
+                <option value="transport">Transport</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div id="allComplaintsList" class="complaints-list"></div>
+        </div>
+
+        <!-- Pending -->
+        <div id="pendingPage" class="page-content">
+          <div class="page-header"><h2>Pending Complaints</h2></div>
+          <div id="pendingComplaintsList" class="complaints-list"></div>
+        </div>
+
+        <!-- In Progress -->
+        <div id="inProgressPage" class="page-content">
+          <div class="page-header"><h2>In Progress</h2></div>
+          <div id="inProgressComplaintsList" class="complaints-list"></div>
+        </div>
+
+        <!-- Resolved -->
+        <div id="resolvedPage" class="page-content">
+          <div class="page-header"><h2>Resolved Complaints</h2></div>
+          <div id="resolvedComplaintsList" class="complaints-list"></div>
+        </div>
+
+        <!-- Profile -->
+        <div id="profilePage" class="page-content">
+          <div class="page-header"><h2>My Profile</h2></div>
+          <div class="profile-section">
+            <div class="profile-card">
+              <h3>User Information</h3>
+              <div class="profile-info">
+                <p><strong>User ID:</strong> <span id="profileUserId"></span></p>
+                <p><strong>Name:</strong>    <span id="profileName"></span></p>
+                <p><strong>Email:</strong>   <span id="profileEmail"></span></p>
+                <p><strong>Type:</strong>    <span id="profileType"></span></p>
+              </div>
+            </div>
+            <div class="profile-card">
+              <h3>Change Password</h3>
+              <form id="changePasswordForm">
+                <div class="form-group"><label>Current Password</label><input type="password" id="oldPassword" required></div>
+                <div class="form-group"><label>New Password</label><input type="password" id="newPassword" required minlength="8"></div>
+                <div class="form-group"><label>Confirm</label><input type="password" id="confirmNewPassword" required minlength="8"></div>
+                <div id="passwordMessage" class="form-message"></div>
+                <button type="submit" class="btn btn-primary">Update Password</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Complaint Detail / Update Modal -->
+  <div id="complaintModal" class="modal">
+    <div class="modal-content large">
+      <span class="close">&times;</span>
+      <h2 style="margin-bottom:16px">Complaint Details</h2>
+      <div id="complaintDetails"></div>
+      <div class="modal-actions">
+        <h3>Update Complaint</h3>
+        <form id="updateComplaintForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Status</label>
+              <select id="updateStatus">
+                <option value="pending">Pending</option>
+                <option value="in-progress">In Progress</option>
+                <option value="resolved">Resolved</option>
+                <option value="closed">Closed</option>
+                <option value="rejected">Rejected</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Priority</label>
+              <select id="updatePriority">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+                <option value="urgent">Urgent</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Admin Remarks</label>
+            <textarea id="adminRemarks" rows="3" placeholder="Add a note or remark…"></textarea>
+          </div>
+          <div id="updateMessage" class="form-message"></div>
+          <button type="submit" class="btn btn-primary">Update Complaint</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/admin-dashboard.js"></script>
+</body>
+</html>

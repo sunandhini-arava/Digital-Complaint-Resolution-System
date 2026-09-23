@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Dashboard — CMS</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+  <div class="dashboard-container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2>📋 DRKCMS</h2>
+        <div class="subtitle">Student Portal</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#dashboard"     class="nav-link active" data-page="dashboard">     <span>📊</span> Dashboard</a>
+        <a href="#complaints"    class="nav-link"        data-page="complaints">    <span>📝</span> My Complaints</a>
+        <a href="#new-complaint" class="nav-link"        data-page="new-complaint"> <span>➕</span> New Complaint</a>
+        <a href="#profile"       class="nav-link"        data-page="profile">       <span>👤</span> Profile</a>
+      </nav>
+      <div class="sidebar-footer">
+        <button id="logoutBtn" class="btn btn-danger btn-full">Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="dashboard-header">
+        <h1>Welcome, <span id="userName">User</span></h1>
+        <div class="user-info">
+          <span id="userType" class="badge"></span>
+        </div>
+      </header>
+
+      <div class="content-area">
+
+        <!-- Dashboard -->
+        <div id="dashboardPage" class="page-content active">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">📋</div>
+              <div class="stat-info"><h3 id="totalComplaints">0</h3><p>Total</p></div>
+            </div>
+            <div class="stat-card stat-pending">
+              <div class="stat-icon">⏳</div>
+              <div class="stat-info"><h3 id="pendingComplaints">0</h3><p>Pending</p></div>
+            </div>
+            <div class="stat-card stat-progress">
+              <div class="stat-icon">🔄</div>
+              <div class="stat-info"><h3 id="inProgressComplaints">0</h3><p>In Progress</p></div>
+            </div>
+            <div class="stat-card stat-resolved">
+              <div class="stat-icon">✅</div>
+              <div class="stat-info"><h3 id="resolvedComplaints">0</h3><p>Resolved</p></div>
+            </div>
+          </div>
+          <div class="content-section">
+            <h2>Recent Complaints</h2>
+            <div id="recentComplaintsList" class="complaints-list"></div>
+          </div>
+        </div>
+
+        <!-- My Complaints -->
+        <div id="complaintsPage" class="page-content">
+          <div class="page-header">
+            <h2>My Complaints</h2>
+            <div class="filters">
+              <select id="statusFilter" class="filter-select">
+                <option value="">All Status</option>
+                <option value="pending">Pending</option>
+                <option value="in-progress">In Progress</option>
+                <option value="resolved">Resolved</option>
+                <option value="closed">Closed</option>
+                <option value="rejected">Rejected</option>
+              </select>
+            </div>
+          </div>
+          <div id="complaintsList" class="complaints-list"></div>
+        </div>
+
+        <!-- New Complaint -->
+        <div id="newComplaintPage" class="page-content">
+          <div class="page-header"><h2>Submit New Complaint</h2></div>
+          <form id="newComplaintForm" class="complaint-form" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="title">Title *</label>
+              <input type="text" id="title" name="title" required maxlength="200"
+                     placeholder="Brief summary of your complaint">
+            </div>
+            <div class="form-group">
+              <label for="description">Description *</label>
+              <textarea id="description" name="description" required rows="5"
+                        placeholder="Describe your complaint in detail…"></textarea>
+            </div>
+
+            <!-- ML Predictions Panel — filled by JS -->
+            <div id="mlPanel" style="display:none;flex-direction:column;gap:8px;margin-bottom:4px"></div>
+
+            <div class="form-group">
+              <label for="category">Category *</label>
+              <select id="category" name="category" required>
+                <option value="">Select a category</option>
+                <option value="academic">Academic</option>
+                <option value="infrastructure">Infrastructure</option>
+                <option value="administrative">Administrative</option>
+                <option value="technical">Technical</option>
+                <option value="hostel">Hostel</option>
+                <option value="transport">Transport</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="attachment">Attachment <small>(Optional)</small></label>
+              <input type="file" id="attachment" name="attachment"
+                     accept=".pdf,.png,.jpg,.jpeg,.doc,.docx">
+              <span class="form-hint">PDF, PNG, JPG, DOC, DOCX — max 16 MB</span>
+            </div>
+            <div id="formMessage" class="form-message"></div>
+            <button type="submit" class="btn btn-primary">Submit Complaint →</button>
+          </form>
+        </div>
+
+        <!-- Profile -->
+        <div id="profilePage" class="page-content">
+          <div class="page-header"><h2>My Profile</h2></div>
+          <div class="profile-section">
+            <div class="profile-card">
+              <h3>User Information</h3>
+              <div class="profile-info">
+                <p><strong>User ID:</strong> <span id="profileUserId"></span></p>
+                <p><strong>Name:</strong>    <span id="profileName"></span></p>
+                <p><strong>Email:</strong>   <span id="profileEmail"></span></p>
+                <p><strong>Type:</strong>    <span id="profileType"></span></p>
+              </div>
+            </div>
+            <div class="profile-card">
+              <h3>Change Password</h3>
+              <form id="changePasswordForm">
+                <div class="form-group">
+                  <label>Current Password</label>
+                  <input type="password" id="oldPassword" required>
+                </div>
+                <div class="form-group">
+                  <label>New Password</label>
+                  <input type="password" id="newPassword" required minlength="8">
+                </div>
+                <div class="form-group">
+                  <label>Confirm New Password</label>
+                  <input type="password" id="confirmNewPassword" required minlength="8">
+                </div>
+                <div id="passwordMessage" class="form-message"></div>
+                <button type="submit" class="btn btn-primary">Update Password</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /content-area -->
+    </main>
+  </div>
+
+  <!-- Complaint Detail Modal -->
+  <div id="complaintModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2 style="margin-bottom:16px">Complaint Details</h2>
+      <div id="complaintDetails"></div>
+    </div>
+  </div>
+
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/student-dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Complaint Management System</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="auth-logo">📋</div>
+        <h2>Sign In</h2>
+        <p>Enter your credentials to access your dashboard</p>
+      </div>
+
+      <form id="loginForm" class="auth-form" autocomplete="on">
+        <div class="form-group">
+          <label for="user_id">User ID</label>
+          <input type="text" id="user_id" name="user_id" required
+                 placeholder="e.g. STU2024001 / ADMIN001"
+                 autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required
+                 placeholder="Enter your password"
+                 autocomplete="current-password">
+        </div>
+
+        <div id="errorMessage"   class="error-message"></div>
+        <div id="successMessage" class="success-message"></div>
+
+        <button type="submit" class="btn btn-primary btn-full" style="margin-top:4px">Sign In →</button>
+      </form>
+
+      <div class="auth-links">
+        <p>First time? <a href="/activate.html">Activate your account</a></p>
+        <p><a href="/">← Back to Home</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/login.js"></script>
+</body>
+</html>

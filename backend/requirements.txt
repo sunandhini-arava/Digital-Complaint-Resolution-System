@@ -1,0 +1,23 @@
+# Web Framework
+Flask==3.0.0
+Flask-CORS==4.0.0
+Werkzeug==3.0.1
+
+# Database
+PyMySQL==1.1.0
+
+# Authentication
+bcrypt==4.1.2
+PyJWT==2.8.0
+python-dotenv==1.0.0
+
+# ML - Python 3.13 compatible versions
+scikit-learn==1.6.1
+pandas==2.2.3
+numpy==2.2.3
+textblob==0.18.0
+nltk==3.9.1
+joblib==1.4.2
+
+# sentence-transformers is optional - skip if install fails
+# sentence-transformers==3.0.0
